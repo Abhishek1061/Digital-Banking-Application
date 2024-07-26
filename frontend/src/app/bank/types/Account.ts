@@ -1,4 +1,4 @@
-import { CustomerTS } from "./Customer";
+import { Customer } from "./Customer";
 
 
 //Accountts.ts
