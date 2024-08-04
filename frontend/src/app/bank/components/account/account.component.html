@@ -1,14 +1,140 @@
-<div>
-  <form [formGroup]="accountForm" (ngSubmit)="onSubmit()">
-    <label for="account_id">Account ID:</label>
-    <input type="text" id="account_id" formControlName="account_id" />
 
-    <label for="customer_id">Customer ID:</label>
-    <input type="text" id="customer_id" formControlName="customer_id" />
+//Day 21
+<form (ngSubmit)="onSubmit()" [formGroup]="customerForm" class="user-form">
+  <div class="form-group">
+    <label for="userId">Name:</label>
+    <input
+      type="text"
+      id="name"
+      formControlName="name"
+      class="form-control"
+    />
+  </div>
+  <div class="form-group">
+    <label for="userId">Email:</label>
+    <input
+      type="email"
+      id="email"
+      formControlName="email"
+      class="form-control"
+    />
+  </div>
+  <div class="form-group">
+    <label for="userId">User Name:</label>
+    <input
+      type="text"
+      id="username"
+      formControlName="username"
+      class="form-control"
+    />
+  </div>
+  <div class="form-group">
+    <label for="userId">Password:</label>
+    <input
+      type="text"
+      id="password"
+      formControlName="password"
+      class="form-control"
+    />
+  </div>
+  <button type="submit" class="btn-submit">Create Customer</button>
 
-    <label for="balance">Balance:</label>
-    <input type="text" id="balance" formControlName="balance" />
+  <ng-container>
+    <div *ngIf="customerError$ | async as error" class="error">
+      {{ error }}
+    </div>
+    <div *ngIf="customerSuccess$ | async as msg" class="success">
+      {{ msg }}
+    </div>
+  </ng-container>
 
-    <button type="submit">Submit</button>
-  </form>
-</div>
+</form>
+
+
+//Typscritp
+
+
+
+
+import { Component, OnInit } from '@angular/core';
+// import { Customer } from '../../types/Customer'; 
+import { CustomerTS } from '../../types/tstypes/Customerts';
+import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
+import { of } from 'rxjs';
+
+@Component({
+  selector: 'app-customers',
+  templateUrl: './customer.component.html',
+  styleUrls: ['./customer.component.css'],
+})
+export class CustomersComponent implements OnInit {
+  isFormSubmitted: boolean | undefined;
+  customerSuccess$: any;
+  customerError$: any;
+onSubmit() {
+  this.isFormSubmitted = true;
+    this.customerSuccess$ = of('');
+    this.customerError$ = of('');
+    this.register();
+  }
+   customerForm!: FormGroup;
+
+   customers: CustomerTS[] = [
+    new CustomerTS("John Doe", "john@example.com", "john_doe", "password123", "User", "1"),
+    new CustomerTS("John Doe1", "john1@example.com", "john_doe", "password123", "Admin", "2")
+   ]
+    
+  constructor( private formBuilder: FormBuilder) {
+  }
+
+  ngOnInit():void {
+    // this.loadCustomers();
+    this.customerForm = this.formBuilder.group({
+      name: ["", [Validators.required]],
+      email: ["", [Validators.required]],
+      username: ["", [Validators.required]],
+      password: ["", [Validators.required]],
+    });
+  }
+  register():boolean {
+   
+    const { name, email, username, password } =this.customerForm.value;
+    // Frontend validation for registration form
+    if (name === "" || email === "" || username === "" || password === "") {
+      this.customerError$= of("All fields are mandatory. Please fill in all the details.");
+        return false;
+    }
+
+    // Validate email format
+    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        this.customerError$=of("Please enter a valid email address.");
+        return false;
+    }
+
+    // Validate username (no special characters)
+    var usernameRegex = /^[a-zA-Z0-9]+$/;
+    if (!usernameRegex.test(username)) {
+        this.customerError$=of("Username should not contain special characters.");
+        return false;
+    }
+
+    // Validate password (at least 8 characters, one capital letter, and one numeric)
+    var passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+    if (!passwordRegex.test(password)) {
+        this.customerError$=of("Password should be at least 8 characters and must contain at least one capital letter and one numeric.");
+        return false;
+    }
+
+    // You can proceed with registration if all validations pass
+    this.customerSuccess$=of("Register clicked. Name: " + name + ", Email: " + email + ", Username: " + username + ", Password: " + password);
+    return true;
+}
+  
+  
+}
+
+
+
+
+
