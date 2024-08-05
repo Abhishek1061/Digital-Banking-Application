@@ -1,8 +1,8 @@
-<form (ngSubmit)="onSubmit()" 
-      [formGroup]="customerForm" 
-      class="user-form">
+<app-navbar></app-navbar>
+ 
+<form (ngSubmit)="onSubmit()" [formGroup]="customerForm" class="user-form">
   <div class="form-group">
-    <label for="name">Name:</label>
+    <label for="userId">Name:</label>
     <input
       type="text"
       id="name"
@@ -11,7 +11,7 @@
     />
   </div>
   <div class="form-group">
-    <label for="email">Email:</label>
+    <label for="userId">Email:</label>
     <input
       type="email"
       id="email"
@@ -20,7 +20,7 @@
     />
   </div>
   <div class="form-group">
-    <label for="username">User Name:</label>
+    <label for="userId">User Name:</label>
     <input
       type="text"
       id="username"
@@ -29,16 +29,23 @@
     />
   </div>
   <div class="form-group">
-    <label for="password">Password:</label>
+    <label for="userId">Password:</label>
     <input
-      type="text"
+      type="password"
       id="password"
       formControlName="password"
       class="form-control"
     />
   </div>
+  <div class="form-group">
+    <label for="role">Role:</label>
+    <select formControlName="role" class="form-control">
+      <option value="USER">User</option>
+      <option value="ADMIN">Admin</option>
+    </select>
+  </div>
   <button type="submit" class="btn-submit">Create Customer</button>
-
+ 
   <ng-container>
     <div *ngIf="customerError$ | async as error" class="error">
       {{ error }}
@@ -47,6 +54,7 @@
       {{ msg }}
     </div>
   </ng-container>
-
+ 
   <a routerLink="/bank" class="task-list" class="task-list">Dashboard</a>
 </form>
+ 
