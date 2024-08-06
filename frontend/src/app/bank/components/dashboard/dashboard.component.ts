@@ -6,12 +6,12 @@ import { Account } from '../../types/Account';
 import { Transaction } from '../../types/Transaction';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/services/auth.service';
-
+ 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
-})   
+})  
 export class DashboardComponent implements OnInit {
   customers$: Observable<Customer[]>;
   accounts$: Observable<Account[]>
@@ -20,28 +20,28 @@ export class DashboardComponent implements OnInit {
   userRole:string;
   userId:number;
   constructor(private bankService: BankService,private router: Router) { }
-
+ 
   ngOnInit(): void {
     this.role = localStorage.getItem("role");
       const strUserId =localStorage.getItem("user_id");
       this.customers$ = this.bankService.getCustomers();
-    
+   
     console.log(this.customers$);
     // this.userRole = localStorage.getItem('role');
     if(this.role=='USER'){
       this.accounts$ = this.bankService.getAccountsByUser(strUserId);
-      
+     
     this.transactions$ = this.bankService.getTransactionByUser(strUserId);
-    
+   
     } else{
       this.accounts$ = this.bankService.getAccounts();
       console.log(this.accounts$);
       this.transactions$ = this.bankService.getAllTranactions();
-    
+   
     }
-  
+ 
   }
-
+ 
   deteteCustomer(customer:any):void{
    // alert(customer.customerId);
     let conf = confirm("Do You Really Want To Delete Customer");
@@ -50,7 +50,7 @@ export class DashboardComponent implements OnInit {
       this.bankService.deleteCustomer(customer.customerId).subscribe(
         () => {
           alert('Customer deleted successfully.');
-
+ 
           // Remove the deleted customer from the local array
          this.customers$ = this.bankService.getCustomers();
         },
@@ -61,12 +61,12 @@ export class DashboardComponent implements OnInit {
       );
     }
   }
-
+ 
   editCustomer(customer:Customer):void{
     this.router.navigate(['/bank/customer/edit', { customerId: customer.customerId,name:customer.name,email:customer.email,username:customer.username, password:customer.password,role:customer.role }]);
-
+ 
   }
-
+ 
   deteteAccount(account:any):void{
     // alert(customer.customerId);
      let conf = confirm("Do You Really Want To Delete Customer");
@@ -96,5 +96,5 @@ export class DashboardComponent implements OnInit {
  
      //return null;
    }
-
+ 
 }

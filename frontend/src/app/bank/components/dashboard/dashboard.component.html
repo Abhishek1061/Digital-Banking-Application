@@ -1,8 +1,7 @@
-
 <app-navbar></app-navbar>
-
+ 
 <div class="table-container" *ngIf="role !== 'USER'">
-  
+ 
   <h2>Customers</h2>
   <table class="customer-table">
     <thead>
@@ -16,11 +15,11 @@
     </thead>
     <tbody>
       <tr *ngFor="let customer of customers$ | async">
-        
+       
         <td>{{ customer.customerId}}</td>
         <td>{{ customer.name }}</td>
         <td>{{ customer.email }}</td>
-        
+       
         <td >  <button class="task-list" (click)="editCustomer(customer)">Edit</button>
         </td>
         <td> <button (click)="deteteCustomer(customer)" >Delete</button>
@@ -29,7 +28,7 @@
     </tbody>
   </table>
 </div>
-
+ 
 <div class="table-container" >
  
   <h2>Accounts</h2>
@@ -39,7 +38,7 @@
         <th>Account Id</th>
         <th>Customer ID</th>
         <th>Balance</th>
-        
+       
         <th *ngIf="role !== 'USER'">Edit</th>
         <th *ngIf="role !== 'USER'">Delete</th>
       </tr>
@@ -56,14 +55,14 @@
     </tbody>
   </table>
 </div>
-
+ 
 <div class="table-container">
-  
+ 
   <h2>Transactions</h2>
   <table class="customer-table">
     <thead>
       <tr>
-      
+     
         <th>Account ID</th>
         <th>Amount</th>
         <th>Date</th>
